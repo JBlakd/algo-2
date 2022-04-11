@@ -107,8 +107,9 @@ public class SAP {
     public int length(int v, int w) {
         // Check if result already cached before performing calculation
         for (CachedExploration cachedExploration : cache) {
-            if (cachedExploration.v == v && cachedExploration.w == w) {
-                // StdOut.printf("(%d, %d) cache hit.\n", v, w);
+            if ((cachedExploration.v == v && cachedExploration.w == w) ||
+                    (cachedExploration.v == w && cachedExploration.w == v)) {
+                StdOut.printf("(%d, %d) cache hit.\n", v, w);
                 return cachedExploration.length;
             }
         }
@@ -120,8 +121,9 @@ public class SAP {
     public int ancestor(int v, int w) {
         // Check if result already cached before performing calculation
         for (CachedExploration cachedExploration : cache) {
-            if (cachedExploration.v == v && cachedExploration.w == w) {
-                // StdOut.printf("(%d, %d) cache hit.\n", v, w);
+            if ((cachedExploration.v == v && cachedExploration.w == w) ||
+                    (cachedExploration.v == w && cachedExploration.w == v)) {
+                StdOut.printf("(%d, %d) cache hit.\n", v, w);
                 return cachedExploration.ancestor;
             }
         }
@@ -151,8 +153,8 @@ public class SAP {
         int v1 = 7;
         int w1 = 9;
 
-        int v2 = 12;
-        int w2 = 8;
+        int v2 = 7;
+        int w2 = 9;
 
         Stopwatch stopwatch = new Stopwatch();
         StdOut.printf("Common ancestor of %d and %d is %d\n", v1, w1, mySAP.ancestor(v1, w1));
