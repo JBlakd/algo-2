@@ -8,6 +8,7 @@ import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Stopwatch;
 
 public class SAP {
 
@@ -107,6 +108,7 @@ public class SAP {
         // Check if result already cached before performing calculation
         for (CachedExploration cachedExploration : cache) {
             if (cachedExploration.v == v && cachedExploration.w == w) {
+                // StdOut.printf("(%d, %d) cache hit.\n", v, w);
                 return cachedExploration.length;
             }
         }
@@ -119,6 +121,7 @@ public class SAP {
         // Check if result already cached before performing calculation
         for (CachedExploration cachedExploration : cache) {
             if (cachedExploration.v == v && cachedExploration.w == w) {
+                // StdOut.printf("(%d, %d) cache hit.\n", v, w);
                 return cachedExploration.ancestor;
             }
         }
@@ -145,13 +148,24 @@ public class SAP {
         SAP mySAP = new SAP(new Digraph(in));
 
         // Ancestor and Length should be 1 and 43 respectively
-        int v = 7;
-        int w = 9;
+        int v1 = 7;
+        int w1 = 9;
 
-        // Ancestor and Length should be -1
-        // int v = 4;
-        // int w = 0;
+        int v2 = 12;
+        int w2 = 8;
 
-        StdOut.printf("Shortest common ancestor of %d and %d is %d", v, w, mySAP.ancestor(v, w));
+        Stopwatch stopwatch = new Stopwatch();
+        StdOut.printf("Common ancestor of %d and %d is %d\n", v1, w1, mySAP.ancestor(v1, w1));
+        StdOut.printf("Took %f seconds.\n\n", stopwatch.elapsedTime());
+        stopwatch = new Stopwatch();
+        StdOut.printf("Common ancestor of %d and %d is %d\n", v2, w2, mySAP.ancestor(v2, w2));
+        StdOut.printf("Took %f seconds.\n\n", stopwatch.elapsedTime());
+        stopwatch = new Stopwatch();
+        StdOut.printf("Length between %d and %d is %d\n", v1, w1, mySAP.length(v1, w1));
+        StdOut.printf("Took %f seconds.\n\n", stopwatch.elapsedTime());
+        stopwatch = new Stopwatch();
+        StdOut.printf("Common ancestor of %d and %d is %d\n", v1, w1, mySAP.ancestor(v1, w1));
+        StdOut.printf("Took %f seconds.\n\n", stopwatch.elapsedTime());
+
     }
 }
