@@ -76,6 +76,12 @@
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
   <component name="RunManager" selected="Application.WordNet">
+    <configuration name="Outcast" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Outcast" />
+      <module name="Algorithms, Part II" />
+      <option name="PROGRAM_PARAMETERS" value="synsets.txt hypernyms.txt outcast-religious.txt outcast5.txt outcast8.txt outcast11.txt" />
+      <method v="2" />
+    </configuration>
     <configuration name="SAP" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="SAP" />
       <module name="Algorithms, Part II" />
@@ -85,7 +91,7 @@
     <configuration name="WordNet" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="WordNet" />
       <module name="Algorithms, Part II" />
-      <option name="PROGRAM_PARAMETERS" value="synsets.txt hypernyms.txt Black_Plague black_marlin" />
+      <option name="PROGRAM_PARAMETERS" value="synsets.txt hypernyms.txt individual edible_fruit" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
