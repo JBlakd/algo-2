@@ -33,6 +33,8 @@ public class SAP {
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
+        StdOut.printf("From SAP constructor: the digraph has %d vertices and %d edges.\n", G.V(),
+                      G.E());
         this.G = G;
     }
 
@@ -75,10 +77,18 @@ public class SAP {
         }
 
         // Start lockstep BFS loop
-        while (!vQ.isEmpty() && !wQ.isEmpty()) {
+        // while (!vQ.isEmpty() && !wQ.isEmpty()) {
+        while (!vQ.isEmpty() || !wQ.isEmpty()) {
+
             // Perform action on current nodes only
-            int curV = vQ.dequeue();
-            int curW = wQ.dequeue();
+            int curV = 0;
+            int curW = 0;
+            if (!vQ.isEmpty()) {
+                curV = vQ.dequeue();
+            }
+            if (!wQ.isEmpty()) {
+                curW = wQ.dequeue();
+            }
 
             for (int vAdj : G.adj(curV)) {
                 if (!vMarked[vAdj]) {
