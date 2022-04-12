@@ -33,8 +33,8 @@ public class SAP {
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
-        StdOut.printf("From SAP constructor: the digraph has %d vertices and %d edges.\n", G.V(),
-                      G.E());
+        // StdOut.printf("From SAP constructor: the digraph has %d vertices and %d edges.\n", G.V(),
+        //               G.E());
         this.G = G;
     }
 
@@ -139,7 +139,7 @@ public class SAP {
         for (CachedExploration cachedExploration : cache) {
             if ((cachedExploration.v == v && cachedExploration.w == w) ||
                     (cachedExploration.v == w && cachedExploration.w == v)) {
-                StdOut.printf("(%d, %d) cache hit.\n", v, w);
+                // StdOut.printf("(%d, %d) cache hit.\n", v, w);
                 return cachedExploration.length;
             }
         }
@@ -158,7 +158,7 @@ public class SAP {
         for (CachedExploration cachedExploration : cache) {
             if ((cachedExploration.v == v && cachedExploration.w == w) ||
                     (cachedExploration.v == w && cachedExploration.w == v)) {
-                StdOut.printf("(%d, %d) cache hit.\n", v, w);
+                // StdOut.printf("(%d, %d) cache hit.\n", v, w);
                 return cachedExploration.ancestor;
             }
         }
@@ -224,9 +224,9 @@ public class SAP {
         StdOut.printf("Length between %d and %d is %d\n", v2, w2, mySAP.length(v2, w2));
         // StdOut.printf("Took %f seconds.\n", stopwatch.elapsedTime());
 
-        Integer vSet[] = { 7, 3, 8 };
+        Integer[] vSet = { 7, 3, 8 };
         List<Integer> vSetList = Arrays.asList(vSet);
-        Integer wSet[] = { 10, 11, 12 };
+        Integer[] wSet = { 10, 11, 12 };
         List<Integer> wSetList = Arrays.asList(wSet);
         StdOut.printf("Common ancestor of %s and %s is %d\n", Arrays.toString(vSet),
                       Arrays.toString(wSet), mySAP.ancestor(vSetList, wSetList));
