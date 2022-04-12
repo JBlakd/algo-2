@@ -38,13 +38,12 @@ public class WordNet {
         while (hypernymIn.hasNextLine()) {
             String[] line = hypernymIn.readLine().split(",");
             if (line.length < 2) {
-                throw new IllegalArgumentException(
-                        "A line in the hypernym file is not formatted properly.");
+                continue;
             }
 
-            // line[0] is the destination, all other parameters are origins
+            // line[0] is the ORIGIN, all other parameters are DESTINATIONS
             for (int i = 1; i < line.length; i++) {
-                digraph.addEdge(Integer.parseInt(line[i]), Integer.parseInt(line[0]));
+                digraph.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[i]));
             }
         }
         hypernymIn.close();
@@ -134,9 +133,9 @@ public class WordNet {
 
         String nounA = args[2];
         String nounB = args[3];
-        StdOut.printf("The ancestor of %s and %s is \"%s\".", nounA, nounB,
+        StdOut.printf("The ancestor of %s and %s is \"%s\". ", nounA, nounB,
                       wordNet.sap(nounA, nounB));
-        StdOut.printf("The length between %s and %s is %d.", nounA, nounB,
+        StdOut.printf("The length between %s and %s is %d.\n", nounA, nounB,
                       wordNet.distance(nounA, nounB));
 
     }
