@@ -20,6 +20,10 @@ public class WordNet {
 
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
+        if (synsets == null || hypernyms == null) {
+            throw new IllegalArgumentException();
+        }
+
         wordIndexMap = new HashMap<String, ArrayList<Integer>>();
         wordArray = new ArrayList<String>();
 
@@ -34,10 +38,18 @@ public class WordNet {
 
     private Digraph hypernymToDigraph(In hypernymIn, int numVertices) {
         Digraph digraph = new Digraph(numVertices);
+        boolean firstRootFound = false;
 
         while (hypernymIn.hasNextLine()) {
             String[] line = hypernymIn.readLine().split(",");
             if (line.length < 2) {
+                if (!firstRootFound) {
+                    firstRootFound = true;
+                }
+                else {
+                    // Second root found. This is no longer a rooted DAG
+                    throw new IllegalArgumentException("Second root found.");
+                }
                 continue;
             }
 
@@ -99,17 +111,37 @@ public class WordNet {
 
     // is the word a WordNet noun?
     public boolean isNoun(String word) {
+        if (word == null) {
+            throw new IllegalArgumentException();
+        }
+
         return wordIndexMap.containsKey(word);
     }
 
     // distance between nounA and nounB (defined below)
     public int distance(String nounA, String nounB) {
+        if (nounA == null || nounB == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!isNoun(nounA) || !isNoun(nounB)) {
+            throw new IllegalArgumentException();
+        }
+
         return sap.length(wordIndexMap.get(nounA), wordIndexMap.get(nounB));
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
     // in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB) {
+        if (nounA == null || nounB == null) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!isNoun(nounA) || !isNoun(nounB)) {
+            throw new IllegalArgumentException();
+        }
+
         int sapIndex = sap.ancestor(wordIndexMap.get(nounA), wordIndexMap.get(nounB));
         // StdOut.printf("From WordNet.sap(): The ancestor of %s and %s is at index %d.\n", nounA,
         //               nounB,

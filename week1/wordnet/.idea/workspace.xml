@@ -152,17 +152,12 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/SAP.java</url>
-          <line>43</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/SAP.java</url>
-          <line>142</line>
+          <line>150</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/WordNet.java</url>
-          <line>40</line>
+          <line>52</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>

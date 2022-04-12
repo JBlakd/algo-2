@@ -33,6 +33,10 @@ public class SAP {
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
+        if (G == null) {
+            throw new IllegalArgumentException();
+        }
+
         // StdOut.printf("From SAP constructor: the digraph has %d vertices and %d edges.\n", G.V(),
         //               G.E());
         this.G = G;
@@ -135,6 +139,10 @@ public class SAP {
 
     // length of shortest ancestral path between v and w; -1 if no such path
     public int length(int v, int w) {
+        if (v < 0 || w < 0 || v >= G.V() || w >= G.V()) {
+            throw new IllegalArgumentException();
+        }
+
         // Check if result already cached before performing calculation
         for (CachedExploration cachedExploration : cache) {
             if ((cachedExploration.v == v && cachedExploration.w == w) ||
@@ -154,6 +162,10 @@ public class SAP {
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
     public int ancestor(int v, int w) {
+        if (v < 0 || w < 0 || v >= G.V() || w >= G.V()) {
+            throw new IllegalArgumentException();
+        }
+
         // Check if result already cached before performing calculation
         for (CachedExploration cachedExploration : cache) {
             if ((cachedExploration.v == v && cachedExploration.w == w) ||
@@ -173,13 +185,23 @@ public class SAP {
 
     // length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
     public int length(Iterable<Integer> v, Iterable<Integer> w) {
+        if (v == null || w == null) {
+            throw new IllegalArgumentException();
+        }
+
         Queue<Integer> vQ = new Queue<Integer>();
-        for (int vElement : v) {
+        for (Integer vElement : v) {
+            if (vElement == null) {
+                throw new IllegalArgumentException();
+            }
             vQ.enqueue(vElement);
         }
 
         Queue<Integer> wQ = new Queue<Integer>();
-        for (int wElement : w) {
+        for (Integer wElement : w) {
+            if (wElement == null) {
+                throw new IllegalArgumentException();
+            }
             wQ.enqueue(wElement);
         }
 
@@ -188,13 +210,23 @@ public class SAP {
 
     // a common ancestor that participates in shortest ancestral path; -1 if no such path
     public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
+        if (v == null || w == null) {
+            throw new IllegalArgumentException();
+        }
+
         Queue<Integer> vQ = new Queue<Integer>();
-        for (int vElement : v) {
+        for (Integer vElement : v) {
+            if (vElement == null) {
+                throw new IllegalArgumentException();
+            }
             vQ.enqueue(vElement);
         }
 
         Queue<Integer> wQ = new Queue<Integer>();
-        for (int wElement : w) {
+        for (Integer wElement : w) {
+            if (wElement == null) {
+                throw new IllegalArgumentException();
+            }
             wQ.enqueue(wElement);
         }
 

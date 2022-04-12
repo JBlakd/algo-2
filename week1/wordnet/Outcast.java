@@ -12,11 +12,19 @@ public class Outcast {
 
     // constructor takes a WordNet object
     public Outcast(WordNet wordnet) {
+        if (wordnet == null) {
+            throw new IllegalArgumentException();
+        }
+
         this.wordNet = wordnet;
     }
 
     // given an array of WordNet nouns, return an outcast
     public String outcast(String[] nouns) {
+        if (nouns == null) {
+            throw new IllegalArgumentException();
+        }
+
         int distanceSumChampionSum = -1;
         String distanceSumChampionNoun = "NO_CHAMPION_YET";
 
