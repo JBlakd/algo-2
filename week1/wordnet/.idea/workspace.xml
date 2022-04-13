@@ -75,7 +75,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
-  <component name="RunManager" selected="Application.SAP">
+  <component name="RunManager" selected="Application.WordNet">
     <configuration name="Outcast" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Outcast" />
       <module name="Algorithms, Part II" />
@@ -151,26 +151,12 @@
           <option name="timeStamp" value="6" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <condition expression="distance == 0" language="JAVA" />
           <url>file://$PROJECT_DIR$/SAP.java</url>
-          <line>178</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/WordNet.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/SAP.java</url>
-          <line>133</line>
-          <option name="timeStamp" value="18" />
+          <line>135</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="wordIndexMap.get(nounA)" language="JAVA" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

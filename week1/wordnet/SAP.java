@@ -94,8 +94,8 @@ public class SAP {
         while (!vQ.isEmpty() || !wQ.isEmpty()) {
 
             // Perform action on current nodes only
-            int curV = 0;
-            int curW = 0;
+            int curV = -1;
+            int curW = -1;
             if (!vQ.isEmpty()) {
                 curV = vQ.dequeue();
                 vMarked[curV] = true;
@@ -105,21 +105,24 @@ public class SAP {
                 wMarked[curW] = true;
             }
 
-            for (int vAdj : G.adj(curV)) {
-                if (!vMarked[vAdj]) {
-                    vQ.enqueue(vAdj);
-                    // vEdgeTo[vAdj] = curV;
-                    vDistTo[vAdj] = vDistTo[curV] + 1;
+            if (curV != -1) {
+                for (int vAdj : G.adj(curV)) {
+                    if (!vMarked[vAdj]) {
+                        vQ.enqueue(vAdj);
+                        // vEdgeTo[vAdj] = curV;
+                        vDistTo[vAdj] = vDistTo[curV] + 1;
+                    }
                 }
             }
-            for (int wAdj : G.adj(curW)) {
-                if (!wMarked[wAdj]) {
-                    wQ.enqueue(wAdj);
-                    // wEdgeTo[wAdj] = curV;
-                    wDistTo[wAdj] = wDistTo[curW] + 1;
+            if (curW != -1) {
+                for (int wAdj : G.adj(curW)) {
+                    if (!wMarked[wAdj]) {
+                        wQ.enqueue(wAdj);
+                        // wEdgeTo[wAdj] = curV;
+                        wDistTo[wAdj] = wDistTo[curW] + 1;
+                    }
                 }
             }
-
             // Actions on current nodes complete, now to check if common ancestor found
             for (int i = 0; i < vMarked.length; i++) {
                 if (!vMarked[i] || !wMarked[i]) {
@@ -145,10 +148,10 @@ public class SAP {
 
             // Clear the queue (i.e. terminate BFS from the corresponding source node)
             // if the distance that the source node has searched is >= to shortestDistance
-            if (shortestDistance != -1 && vDistTo[curV] >= shortestDistance) {
+            if (shortestDistance != -1 && curV != -1 && vDistTo[curV] >= shortestDistance) {
                 vQ = new Queue<Integer>();
             }
-            if (shortestDistance != -1 && wDistTo[curW] >= shortestDistance) {
+            if (shortestDistance != -1 && curW != -1 && wDistTo[curW] >= shortestDistance) {
                 wQ = new Queue<Integer>();
             }
         }
