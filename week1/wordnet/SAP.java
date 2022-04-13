@@ -52,6 +52,10 @@ public class SAP {
             toCache = true;
             vSingle = vQ.peek();
             wSingle = wQ.peek();
+            // Special case same vertices
+            if (vSingle == wSingle) {
+                return isReturnAncestor ? vSingle : 0;
+            }
         }
 
         boolean[] vMarked = new boolean[G.V()];
@@ -63,7 +67,9 @@ public class SAP {
         // Arrays.fill(wEdgeTo, -1);
 
         int[] vDistTo = new int[G.V()];
+        Arrays.fill(vDistTo, -1);
         int[] wDistTo = new int[G.V()];
+        Arrays.fill(wDistTo, -1);
 
         // Queue<Integer> vQ = new Queue<Integer>();
         // Queue<Integer> wQ = new Queue<Integer>();
@@ -80,6 +86,9 @@ public class SAP {
             wDistTo[w] = 0;
         }
 
+        int shortestDistance = -1;
+        int shortestAncestor = -1;
+
         // Start lockstep BFS loop
         // while (!vQ.isEmpty() && !wQ.isEmpty()) {
         while (!vQ.isEmpty() || !wQ.isEmpty()) {
@@ -89,22 +98,22 @@ public class SAP {
             int curW = 0;
             if (!vQ.isEmpty()) {
                 curV = vQ.dequeue();
+                vMarked[curV] = true;
             }
             if (!wQ.isEmpty()) {
                 curW = wQ.dequeue();
+                wMarked[curW] = true;
             }
 
             for (int vAdj : G.adj(curV)) {
                 if (!vMarked[vAdj]) {
                     vQ.enqueue(vAdj);
-                    vMarked[vAdj] = true;
                     // vEdgeTo[vAdj] = curV;
                     vDistTo[vAdj] = vDistTo[curV] + 1;
                 }
             }
             for (int wAdj : G.adj(curW)) {
                 if (!wMarked[wAdj]) {
-                    wMarked[wAdj] = true;
                     wQ.enqueue(wAdj);
                     // wEdgeTo[wAdj] = curV;
                     wDistTo[wAdj] = wDistTo[curW] + 1;
@@ -117,24 +126,43 @@ public class SAP {
                     continue;
                 }
 
+                // common ancestor found, but hold your horses, don't return yet
                 if (vMarked[i] && wMarked[i]) {
-                    // Cache
-                    if (cache.size() > 5) {
-                        cache.dequeue();
-                    }
-
+                    // Record shortest found information so far, if applicable
                     int distance = vDistTo[i] + wDistTo[i];
-
-                    if (toCache) {
-                        cache.enqueue(new CachedExploration(vSingle, wSingle, i, distance));
+                    if (shortestDistance == -1) {
+                        shortestDistance = distance;
+                        shortestAncestor = i;
                     }
-
-                    return isReturnAncestor ? i : distance;
+                    else {
+                        if (distance < shortestDistance) {
+                            shortestDistance = distance;
+                            shortestAncestor = i;
+                        }
+                    }
                 }
+            }
+
+            // Clear the queue (i.e. terminate BFS from the corresponding source node)
+            // if the distance that the source node has searched is >= to shortestDistance
+            if (shortestDistance != -1 && vDistTo[curV] >= shortestDistance) {
+                vQ = new Queue<Integer>();
+            }
+            if (shortestDistance != -1 && wDistTo[curW] >= shortestDistance) {
+                wQ = new Queue<Integer>();
             }
         }
 
-        return -1;
+        // Cache
+        if (cache.size() > 5) {
+            cache.dequeue();
+        }
+        if (toCache) {
+            cache.enqueue(
+                    new CachedExploration(vSingle, wSingle, shortestAncestor, shortestDistance));
+        }
+
+        return isReturnAncestor ? shortestAncestor : shortestDistance;
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
@@ -239,26 +267,26 @@ public class SAP {
         In in = new In(filename);
         SAP mySAP = new SAP(new Digraph(in));
 
-        int v1 = 7;
-        int w1 = 8;
-        int v2 = 8;
-        int w2 = 12;
+        int v1 = 4;
+        int w1 = 0;
+        // int v2 = 5;
+        // int w2 = 8;
         // Stopwatch stopwatch = new Stopwatch();
         StdOut.printf("Common ancestor of %d and %d is %d\n", v1, w1, mySAP.ancestor(v1, w1));
         // StdOut.printf("Took %f seconds.\n", stopwatch.elapsedTime());
         // stopwatch = new Stopwatch();
-        StdOut.printf("Common ancestor of %d and %d is %d\n", v2, w2, mySAP.ancestor(v2, w2));
+        // StdOut.printf("Common ancestor of %d and %d is %d\n", v2, w2, mySAP.ancestor(v2, w2));
         // StdOut.printf("Took %f seconds.\n", stopwatch.elapsedTime());
         // stopwatch = new Stopwatch();
         StdOut.printf("Length between %d and %d is %d\n", v1, w1, mySAP.length(v1, w1));
         // StdOut.printf("Took %f seconds.\n", stopwatch.elapsedTime());
         // stopwatch = new Stopwatch();
-        StdOut.printf("Length between %d and %d is %d\n", v2, w2, mySAP.length(v2, w2));
+        // StdOut.printf("Length between %d and %d is %d\n", v2, w2, mySAP.length(v2, w2));
         // StdOut.printf("Took %f seconds.\n", stopwatch.elapsedTime());
 
         Integer[] vSet = { 7, 3, 8 };
         List<Integer> vSetList = Arrays.asList(vSet);
-        Integer[] wSet = { 10, 11, 12 };
+        Integer[] wSet = { 1, 2, 4 };
         List<Integer> wSetList = Arrays.asList(wSet);
         StdOut.printf("Common ancestor of %s and %s is %d\n", Arrays.toString(vSet),
                       Arrays.toString(wSet), mySAP.ancestor(vSetList, wSetList));

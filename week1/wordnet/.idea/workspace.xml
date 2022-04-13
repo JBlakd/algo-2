@@ -75,7 +75,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
-  <component name="RunManager" selected="Application.WordNet">
+  <component name="RunManager" selected="Application.SAP">
     <configuration name="Outcast" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Outcast" />
       <module name="Algorithms, Part II" />
@@ -85,7 +85,7 @@
     <configuration name="SAP" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="SAP" />
       <module name="Algorithms, Part II" />
-      <option name="PROGRAM_PARAMETERS" value="digraph1.txt" />
+      <option name="PROGRAM_PARAMETERS" value="digraph9.txt" />
       <method v="2" />
     </configuration>
     <configuration name="WordNet" type="Application" factoryName="Application">
@@ -152,13 +152,18 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/SAP.java</url>
-          <line>150</line>
+          <line>178</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/WordNet.java</url>
           <line>52</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/SAP.java</url>
+          <line>133</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
