@@ -39,7 +39,7 @@ public class SAP {
 
         // StdOut.printf("From SAP constructor: the digraph has %d vertices and %d edges.\n", G.V(),
         //               G.E());
-        this.G = G;
+        this.G = new Digraph(G);
     }
 
     private int flexibleBFS(Queue<Integer> vQ, Queue<Integer> wQ,
@@ -250,12 +250,18 @@ public class SAP {
             if (vElement == null) {
                 throw new IllegalArgumentException();
             }
+            if (vElement < 0 || vElement >= G.V()) {
+                throw new IllegalArgumentException();
+            }
             vQ.enqueue(vElement);
         }
 
         Queue<Integer> wQ = new Queue<Integer>();
         for (Integer wElement : w) {
             if (wElement == null) {
+                throw new IllegalArgumentException();
+            }
+            if (wElement < 0 || wElement >= G.V()) {
                 throw new IllegalArgumentException();
             }
             wQ.enqueue(wElement);
