@@ -75,11 +75,17 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
-  <component name="RunManager" selected="Application.SeamCarver">
+  <component name="RunManager" selected="Application.ResizeDemo">
     <configuration name="PrintSeams" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="PrintSeams" />
       <module name="Algorithms, Part II" />
       <option name="PROGRAM_PARAMETERS" value="3x7.png" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ResizeDemo" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ResizeDemo" />
+      <module name="Algorithms, Part II" />
+      <option name="PROGRAM_PARAMETERS" value="chameleon.png 100 50" />
       <method v="2" />
     </configuration>
     <configuration name="SeamCarver" type="Application" factoryName="Application">
@@ -91,7 +97,7 @@
     <configuration name="ShowSeams" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ShowSeams" />
       <module name="Algorithms, Part II" />
-      <option name="PROGRAM_PARAMETERS" value="hentai.png" />
+      <option name="PROGRAM_PARAMETERS" value="HJOcean.png" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">

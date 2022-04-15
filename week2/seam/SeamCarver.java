@@ -19,12 +19,23 @@ public class SeamCarver {
     private static final int RIGHT_VIRTUAL_INDEX = 1;
     private static final int NUM_VIRTUAL_VERTICES = 2;
 
-    Picture picture;
+    // Picture picture;
+    int[][] pictureArr;
+    int width;
+    int height;
 
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
-        // defensive copy
-        this.picture = new Picture(picture);
+        width = picture.width();
+        height = picture.height();
+
+        pictureArr = new int[height][width];
+
+        for (int row = 0; row < picture.height(); row++) {
+            for (int col = 0; col < picture.width(); col++) {
+                pictureArr[row][col] = picture.getRGB(col, row);
+            }
+        }
     }
 
     private int toIndex(int col, int row) {
@@ -41,17 +52,25 @@ public class SeamCarver {
 
     // current picture
     public Picture picture() {
+        Picture picture = new Picture(width, height);
+
+        for (int row = 0; row < picture.height(); row++) {
+            for (int col = 0; col < picture.width(); col++) {
+                picture.setRGB(col, row, pictureArr[row][col]);
+            }
+        }
+
         return picture;
     }
 
     // width of current picture
     public int width() {
-        return picture.width();
+        return width;
     }
 
     // height of current picture
     public int height() {
-        return picture.height();
+        return height;
     }
 
     // energy of pixel at column x and row y
@@ -63,11 +82,11 @@ public class SeamCarver {
         // Avoid redundant calls to the get() method in Picture.
         // For example, to access the red, green, and blue components of a pixel,
         // call get() only once (and not three times).
-        int rgbRight = picture.getRGB(x + 1, y);
+        int rgbRight = pictureArr[y][x + 1];
         int redRight = (rgbRight >> 16) & 0xFF;
         int greenRight = (rgbRight >> 8) & 0xFF;
         int blueRight = rgbRight & 0xFF;
-        int rgbLeft = picture.getRGB(x - 1, y);
+        int rgbLeft = pictureArr[y][x - 1];
         int redLeft = (rgbLeft >> 16) & 0xFF;
         int greenLeft = (rgbLeft >> 8) & 0xFF;
         int blueLeft = rgbLeft & 0xFF;
@@ -75,11 +94,11 @@ public class SeamCarver {
                 (greenRight - greenLeft) * (greenRight - greenLeft) +
                 (blueRight - blueLeft) * (blueRight - blueLeft);
 
-        int rgbTop = picture.getRGB(x, y - 1);
+        int rgbTop = pictureArr[y - 1][x];
         int redTop = (rgbTop >> 16) & 0xFF;
         int greenTop = (rgbTop >> 8) & 0xFF;
         int blueTop = rgbTop & 0xFF;
-        int rgbBottom = picture.getRGB(x, y + 1);
+        int rgbBottom = pictureArr[y + 1][x];
         int redBottom = (rgbBottom >> 16) & 0xFF;
         int greenBottom = (rgbBottom >> 8) & 0xFF;
         int blueBottom = rgbBottom & 0xFF;
@@ -296,12 +315,42 @@ public class SeamCarver {
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
-        // TODO
+        int[][] returnCopy = new int[height - 1][width];
+
+        // Can't use System.arraycopy(). Gotta use arithmetic
+        for (int col = 0; col < width; col++) {
+            int origRow = 0;
+            int copyRow = 0;
+            while (origRow < height) {
+                if (origRow == seam[col]) {
+                    origRow++;
+                    continue;
+                }
+
+                returnCopy[copyRow][col] = pictureArr[origRow][col];
+
+                origRow++;
+                copyRow++;
+            }
+        }
+
+        height--;
+        pictureArr = returnCopy;
     }
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
-        // TODO
+        int[][] returnCopy = new int[height][width - 1];
+
+        for (int row = 0; row < height; row++) {
+            // Gotta remove seam[row]
+            System.arraycopy(pictureArr[row], 0, returnCopy[row], 0, seam[row]);
+            System.arraycopy(pictureArr[row], seam[row] + 1, returnCopy[row], seam[row],
+                             pictureArr[row].length - seam[row] - 1);
+        }
+
+        width--;
+        pictureArr = returnCopy;
     }
 
     //  unit testing (optional)
