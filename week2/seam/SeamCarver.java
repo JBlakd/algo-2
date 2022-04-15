@@ -20,12 +20,16 @@ public class SeamCarver {
     private static final int NUM_VIRTUAL_VERTICES = 2;
 
     // Picture picture;
-    int[][] pictureArr;
-    int width;
-    int height;
+    private int[][] pictureArr;
+    private int width;
+    private int height;
 
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
+        if (picture == null) {
+            throw new IllegalArgumentException();
+        }
+
         width = picture.width();
         height = picture.height();
 
@@ -75,6 +79,10 @@ public class SeamCarver {
 
     // energy of pixel at column x and row y
     public double energy(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height) {
+            throw new IllegalArgumentException();
+        }
+
         if (x == 0 || x == width() - 1 || y == 0 || y == height() - 1) {
             return 1000;
         }
@@ -315,10 +323,24 @@ public class SeamCarver {
 
     // remove horizontal seam from current picture
     public void removeHorizontalSeam(int[] seam) {
+        if (seam == null || height <= 1) {
+            throw new IllegalArgumentException();
+        }
+
         int[][] returnCopy = new int[height - 1][width];
 
         // Can't use System.arraycopy(). Gotta use arithmetic
         for (int col = 0; col < width; col++) {
+            if (seam[col] < 0 || seam[col] > height) {
+                throw new IllegalArgumentException();
+            }
+
+            if (col > 0) {
+                if (Math.abs(seam[col] - seam[col - 1]) > 1) {
+                    throw new IllegalArgumentException();
+                }
+            }
+
             int origRow = 0;
             int copyRow = 0;
             while (origRow < height) {
@@ -340,9 +362,23 @@ public class SeamCarver {
 
     // remove vertical seam from current picture
     public void removeVerticalSeam(int[] seam) {
+        if (seam == null || width <= 1) {
+            throw new IllegalArgumentException();
+        }
+
         int[][] returnCopy = new int[height][width - 1];
 
         for (int row = 0; row < height; row++) {
+            if (seam[row] < 0 || seam[row] > width) {
+                throw new IllegalArgumentException();
+            }
+
+            if (row > 0) {
+                if (Math.abs(seam[row] - seam[row - 1]) > 1) {
+                    throw new IllegalArgumentException();
+                }
+            }
+
             // Gotta remove seam[row]
             System.arraycopy(pictureArr[row], 0, returnCopy[row], 0, seam[row]);
             System.arraycopy(pictureArr[row], seam[row] + 1, returnCopy[row], seam[row],
