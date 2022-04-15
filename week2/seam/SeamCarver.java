@@ -11,8 +11,12 @@ import java.util.Arrays;
 
 public class SeamCarver {
 
+    // For finding vertical seam
     private static final int TOP_VIRTUAL_INDEX = 0;
     private static final int BOTTOM_VIRTUAL_INDEX = 1;
+    // For finding horizontal seam
+    private static final int LEFT_VIRTUAL_INDEX = 0;
+    private static final int RIGHT_VIRTUAL_INDEX = 1;
     private static final int NUM_VIRTUAL_VERTICES = 2;
 
     Picture picture;
@@ -88,8 +92,75 @@ public class SeamCarver {
 
     // sequence of indices for horizontal seam
     public int[] findHorizontalSeam() {
-        // TODO
-        return null;
+        // When finding a seam, call energy() at most once per pixel.
+        // For example, you can save the energies in a local variable energy[][]
+        // and access the information directly from the 2D array (instead of recomputing from scratch).
+        double[] energy = new double[height() * width() + NUM_VIRTUAL_VERTICES];
+
+        // calculate energies
+        energy[LEFT_VIRTUAL_INDEX] = 0;
+        energy[RIGHT_VIRTUAL_INDEX] = 0;
+        int i = NUM_VIRTUAL_VERTICES;
+        for (int x = 0; x < width(); x++) {
+            for (int y = 0; y < height(); y++) {
+                energy[i] = energy(x, y);
+                i++;
+            }
+        }
+
+        // Initialize edgeTo
+        int[] edgeTo = new int[height() * width() + NUM_VIRTUAL_VERTICES];
+        Arrays.fill(edgeTo, -1);
+
+        // Initialize distTo
+        double[] distTo = new double[height() * width() + NUM_VIRTUAL_VERTICES];
+        Arrays.fill(distTo, Double.POSITIVE_INFINITY);
+        distTo[LEFT_VIRTUAL_INDEX] = 0.0;
+
+        // First do the LEFT_VIRTUAL_INDEX
+        int[] leftCol = adjHorizontal(LEFT_VIRTUAL_INDEX);
+        if (leftCol != null) {
+            for (int w : leftCol) {
+                relax(LEFT_VIRTUAL_INDEX, w, distTo, edgeTo, energy);
+            }
+        }
+        // Calculate COLUMN MAJOR TRAVERSAL
+        for (int x = 0; x < width(); x++) {
+            for (int y = 0; y < height(); y++) {
+                int v = toIndex(x, y);
+                int[] neighbors = adjHorizontal(v);
+                if (neighbors == null) {
+                    continue;
+                }
+
+                for (int w : neighbors) {
+                    relax(v, w, distTo, edgeTo, energy);
+                }
+            }
+        }
+
+        // Calculate ROW MAJOR TRAVERSAL
+        // for (int v = 0; v < energy.length; v++) {
+        //     int[] neighbors = adjHorizontal(v);
+        //     if (neighbors == null) {
+        //         continue;
+        //     }
+        //
+        //     for (int w : neighbors) {
+        //         relax(v, w, distTo, edgeTo, energy);
+        //     }
+        // }
+
+        int[] seam = new int[width()];
+        i = width() - 1;
+        int curNode = RIGHT_VIRTUAL_INDEX;
+        while (edgeTo[curNode] != LEFT_VIRTUAL_INDEX) {
+            seam[i] = toRow(edgeTo[curNode]);
+            curNode = edgeTo[curNode];
+            i--;
+        }
+
+        return seam;
     }
 
     private void relax(int v, int w, double[] distTo, int[] edgeTo, double[] energy) {
@@ -104,7 +175,8 @@ public class SeamCarver {
             // return array containing top row
             int[] retVal = new int[width()];
             for (int i = 0; i < width(); i++) {
-                retVal[i] = i + NUM_VIRTUAL_VERTICES;
+                // retVal[i] = i + NUM_VIRTUAL_VERTICES;
+                retVal[i] = toIndex(i, 0);
             }
             return retVal;
         }
@@ -118,7 +190,7 @@ public class SeamCarver {
 
         // Bottom row
         if (row == height() - 1) {
-            return null;
+            return new int[] { BOTTOM_VIRTUAL_INDEX };
         }
 
         // Right-most column
@@ -133,6 +205,42 @@ public class SeamCarver {
 
         // All other vertices
         return new int[] { index + width() - 1, index + width(), index + width() + 1 };
+    }
+
+    private int[] adjHorizontal(int index) {
+        if (index == LEFT_VIRTUAL_INDEX) {
+            // return array containing left col
+            int[] retVal = new int[height()];
+            for (int i = 0; i < height(); i++) {
+                retVal[i] = toIndex(0, i);
+            }
+            return retVal;
+        }
+
+        if (index == RIGHT_VIRTUAL_INDEX) {
+            return null;
+        }
+
+        int col = toCol(index);
+        int row = toRow(index);
+
+        // Right-most column
+        if (col == width() - 1) {
+            return new int[] { RIGHT_VIRTUAL_INDEX };
+        }
+
+        // Top-most row
+        if (row == 0) {
+            return new int[] { index + 1, index + width() + 1 };
+        }
+
+        // Bottom-most row
+        if (row == height() - 1) {
+            return new int[] { index + 1, index - width() + 1 };
+        }
+
+        // All other vertices
+        return new int[] { index - width() + 1, index + 1, index + width() + 1 };
     }
 
     // sequence of indices for vertical seam
@@ -174,8 +282,16 @@ public class SeamCarver {
             }
         }
 
-        // TODO
-        return null;
+        int[] seam = new int[height()];
+        i = height() - 1;
+        int curNode = BOTTOM_VIRTUAL_INDEX;
+        while (edgeTo[curNode] != TOP_VIRTUAL_INDEX) {
+            seam[i] = toCol(edgeTo[curNode]);
+            curNode = edgeTo[curNode];
+            i--;
+        }
+
+        return seam;
     }
 
     // remove horizontal seam from current picture

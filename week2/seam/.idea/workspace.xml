@@ -75,11 +75,23 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.SeamCarver">
+    <configuration name="PrintSeams" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="PrintSeams" />
+      <module name="Algorithms, Part II" />
+      <option name="PROGRAM_PARAMETERS" value="3x7.png" />
+      <method v="2" />
+    </configuration>
     <configuration name="SeamCarver" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="SeamCarver" />
       <module name="Algorithms, Part II" />
       <option name="PROGRAM_PARAMETERS" value="3x4.png" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ShowSeams" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="ShowSeams" />
+      <module name="Algorithms, Part II" />
+      <option name="PROGRAM_PARAMETERS" value="hentai.png" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">

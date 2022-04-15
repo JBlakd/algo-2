@@ -3,7 +3,7 @@
  *  Execution:    java ShowSeams input.png
  *  Dependencies: SeamCarver.java SCUtility.java
  *
- *  Read image from file specified as command line argument. Show 3 images 
+ *  Read image from file specified as command line argument. Show 3 images
  *  original image as well as horizontal and vertical seams of that image.
  *  Each image hides the previous one - drag them to see all three.
  *
@@ -32,15 +32,14 @@ public class ShowSeams {
     public static void main(String[] args) {
         Picture picture = new Picture(args[0]);
         StdOut.printf("image is %d columns by %d rows\n", picture.width(), picture.height());
-        picture.show();        
+        picture.show();
         SeamCarver sc = new SeamCarver(picture);
-        
-        StdOut.printf("Displaying horizontal seam calculated.\n");
-        showHorizontalSeam(sc);
 
         StdOut.printf("Displaying vertical seam calculated.\n");
         showVerticalSeam(sc);
 
+        StdOut.printf("Displaying horizontal seam calculated.\n");
+        showHorizontalSeam(sc);
     }
 
 }
