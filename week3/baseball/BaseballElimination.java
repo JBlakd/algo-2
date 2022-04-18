@@ -6,6 +6,7 @@
 
 import edu.princeton.cs.algs4.FlowEdge;
 import edu.princeton.cs.algs4.FlowNetwork;
+import edu.princeton.cs.algs4.FordFulkerson;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
@@ -109,7 +110,7 @@ public class BaseballElimination {
     private FlowNetwork createBaseballFlowNetwork(Iterable<String> teams, String subjectTeam) {
         // Vertices in order
         // 1 source, triangle(numTeam), numTeam, 1 sink
-        int triangle = ((n - 2) * (((n - 2) + 1) / 2));
+        int triangle = (((n - 2) * ((n - 2) + 1)) / 2);
         // StdOut.printf("Triangle: %d\n", triangle);
         int numVertices = 2 + triangle + (n - 1);
         int subjectTeamIndex = teamsIndexMap.get(subjectTeam);
@@ -132,26 +133,26 @@ public class BaseballElimination {
                     continue;
                 }
                 retVal.addEdge(new FlowEdge(0, versusEdgeIndex, g[teamIndex][j]));
-                StdOut.printf("Edge (0, %d, %d) added corresponding to Team %d vs Team %d.\n",
-                              versusEdgeIndex, g[teamIndex][j], teamIndex,
-                              j);
+                // StdOut.printf("Edge (0, %d, %d) added corresponding to Team %d vs Team %d.\n",
+                // versusEdgeIndex, g[teamIndex][j], teamIndex,
+                //         j);
 
                 // Might as well add the edges from versus vertices to individual team vertices while we're here
                 retVal.addEdge(new FlowEdge(versusEdgeIndex,
                                             teamIndexToFlowNetworkIndex(teamIndex, subjectTeamIndex,
                                                                         triangle),
-                                            Integer.MAX_VALUE));
+                                            2000000));
                 retVal.addEdge(new FlowEdge(versusEdgeIndex,
                                             teamIndexToFlowNetworkIndex(j, subjectTeamIndex,
                                                                         triangle),
-                                            Integer.MAX_VALUE));
+                                            2000000));
 
                 versusEdgeIndex++;
             }
         }
 
-        StdOut.printf("%d edges added. Correct? %b\n", versusEdgeIndex - 1,
-                      ((versusEdgeIndex - 1) == triangle));
+        // StdOut.printf("%d edges added. Correct? %b\n", versusEdgeIndex - 1,
+        //               ((versusEdgeIndex - 1) == triangle));
 
         // Add edges from individual team vertices to sink
         for (String team : teams) {
@@ -168,7 +169,7 @@ public class BaseballElimination {
                                  retVal.V() - 1, allowedWins));
         }
 
-        StdOut.printf("%d edges in total. Expected %d.", retVal.E(), 3 * triangle + (n - 1));
+        // StdOut.printf("%d edges in total. Expected %d.", retVal.E(), 3 * triangle + (n - 1));
 
         return retVal;
     }
@@ -188,9 +189,41 @@ public class BaseballElimination {
 
     // is given team eliminated?
     public boolean isEliminated(String team) {
+        if (team == null) {
+            throw new IllegalArgumentException();
+        }
 
+        int teamIndex = teamsIndexMap.get(team);
 
-        return false;
+        // handle trivial elimination
+        for (String otherTeam : teams()) {
+            if (otherTeam.equals(team)) {
+                continue;
+            }
+
+            int otherTeamIndex = teamsIndexMap.get(otherTeam);
+
+            if (w[teamIndex] + r[teamIndex] < w[otherTeamIndex]) {
+                StdOut.printf(
+                        "%s is trivially eliminated by %s (and maybe some other teams as well)\n",
+                        team, otherTeam);
+                return true;
+            }
+        }
+
+        FlowNetwork G = createBaseballFlowNetwork(teams(), team);
+        int maxCapacity = 0;
+        for (FlowEdge fe : G.adj(0)) {
+            maxCapacity += fe.capacity();
+        }
+        FordFulkerson ff = new FordFulkerson(G, 0, G.V() - 1);
+        int maxFlow = Math.toIntExact(Math.round(ff.value()));
+
+        if (maxFlow > maxCapacity) {
+            throw new RuntimeException("maxFlow is greater than maxCapacity");
+        }
+
+        return (maxFlow != maxCapacity);
     }
 
     // subset R of teams that eliminates given team; null if not eliminated
@@ -213,13 +246,10 @@ public class BaseballElimination {
             StdOut.println();
         }
 
-        FlowNetwork fn = be.createBaseballFlowNetwork(be.teams(), args[1]);
-
-        // String currentTeam = args[1];
-        // List<String> otherTeams = be.otherTeams(be.teams(), currentTeam);
-        // StdOut.printf("\nTeams other than %s:\n", currentTeam);
-        // for (String otherTeam : otherTeams) {
-        //     StdOut.printf("%20s: ", otherTeam);
-        // }
+        for (String team : be.teams()) {
+            if (be.isEliminated(team)) {
+                StdOut.printf("%s is eliminated\n", team);
+            }
+        }
     }
 }
