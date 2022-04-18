@@ -10,6 +10,7 @@ import edu.princeton.cs.algs4.FordFulkerson;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class BaseballElimination {
@@ -228,8 +229,52 @@ public class BaseballElimination {
 
     // subset R of teams that eliminates given team; null if not eliminated
     public Iterable<String> certificateOfElimination(String team) {
-        // TODO
-        return null;
+        if (team == null) {
+            throw new IllegalArgumentException();
+        }
+
+        int teamIndex = teamsIndexMap.get(team);
+        ArrayList<String> retVal = new ArrayList<String>();
+
+        // handle trivial elimination
+        for (String otherTeam : teams()) {
+            if (otherTeam.equals(team)) {
+                continue;
+            }
+
+            int otherTeamIndex = teamsIndexMap.get(otherTeam);
+
+            if (w[teamIndex] + r[teamIndex] < w[otherTeamIndex]) {
+                // StdOut.printf(
+                //         "%s is trivially eliminated by %s (and maybe some other teams as well)\n",
+                //         team, otherTeam);
+                retVal.add(otherTeam);
+                return retVal;
+            }
+        }
+
+        FlowNetwork G = createBaseballFlowNetwork(teams(), team);
+        FordFulkerson ff = new FordFulkerson(G, 0, G.V() - 1);
+
+        // calculate certificate
+        // int totalWins = 0;
+        int triangle = (((n - 2) * ((n - 2) + 1)) / 2);
+        for (String otherTeam : teams()) {
+            if (otherTeam.equals(team)) {
+                continue;
+            }
+
+            int otherTeamIndex = teamsIndexMap.get(otherTeam);
+
+            if (ff.inCut(teamIndexToFlowNetworkIndex(otherTeamIndex, teamIndex, triangle))) {
+                retVal.add(otherTeam);
+            }
+        }
+
+        // // verify certificate
+        // alpha =
+
+        return retVal;
     }
 
     public static void main(String[] args) {
@@ -248,7 +293,11 @@ public class BaseballElimination {
 
         for (String team : be.teams()) {
             if (be.isEliminated(team)) {
-                StdOut.printf("%s is eliminated\n", team);
+                StdOut.printf("%s is eliminated. Cert: ", team);
+                for (String certTeam : be.certificateOfElimination(team)) {
+                    StdOut.printf("%s, ", certTeam);
+                }
+                StdOut.println();
             }
         }
     }
