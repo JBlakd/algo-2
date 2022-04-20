@@ -75,11 +75,16 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.BoggleSolver">
+    <configuration name="BoggleBoard" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="BoggleBoard" />
+      <module name="Algorithms, Part II" />
+      <method v="2" />
+    </configuration>
     <configuration name="BoggleSolver" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="BoggleSolver" />
       <module name="Algorithms, Part II" />
-      <option name="PROGRAM_PARAMETERS" value="dictionary-algs4.txt" />
+      <option name="PROGRAM_PARAMETERS" value="dictionary-algs4.txt board4x4.txt" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -122,5 +127,32 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
     </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="sbString.equals(&quot;DE&quot;)" language="JAVA" />
+          <url>file://$PROJECT_DIR$/BoggleSolver.java</url>
+          <line>142</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/BoggleSolver.java</url>
+          <line>153</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="(char) board1D[neighbour]" language="JAVA" />
+        <watch expression="adj(index)" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

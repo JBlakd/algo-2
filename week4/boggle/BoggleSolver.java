@@ -7,36 +7,155 @@
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class BoggleSolver {
-    private BoggleTrie boggleTrie = new BoggleTrie();
+    private BoggleTrie dictTrie;
+    private BoggleTrie foundTrie;
+    private ArrayList<String> boggleWordList;
+    private int numRow;
+    private int numCol;
+    private int[] board1D;
+    // private boolean[] marked;
 
     // Initializes the data structure using the given array of strings as the dictionary.
     // (You can assume each word in the dictionary contains only the uppercase letters A through Z.)
     public BoggleSolver(String[] dictionary) {
+        dictTrie = new BoggleTrie();
+        foundTrie = new BoggleTrie();
+
         for (String word : dictionary) {
-            boggleTrie.put(word, boggleTrie.getPoints(word));
+            dictTrie.put(word);
         }
     }
 
     // Returns the set of all valid words in the given Boggle board, as an Iterable.
     public Iterable<String> getAllValidWords(BoggleBoard board) {
-        // TODO
-        return null;
+        numRow = board.rows();
+        numCol = board.cols();
+        board1D = new int[numRow * numCol];
+        boggleWordList = new ArrayList<>();
+
+        int idx = 0;
+        for (int i = 0; i < numRow; i++) {
+            for (int j = 0; j < numCol; j++) {
+                board1D[idx] = board.getLetter(i, j);
+                idx++;
+            }
+        }
+
+        for (int i = 0; i < board1D.length; i++) {
+            boolean[] marked = new boolean[numRow * numCol];
+            dfs(i, "", marked);
+        }
+
+        return boggleWordList;
     }
 
     // Returns the score of the given word if it is in the dictionary, zero otherwise.
     // (You can assume the word contains only the uppercase letters A through Z.)
     public int scoreOf(String word) {
-        return boggleTrie.get(word);
+        return dictTrie.get(word);
     }
 
     public static void main(String[] args) {
         In in = new In(args[0]);
-        String[] dictionary = in.readAllLines();
-        BoggleSolver boggleSolver = new BoggleSolver(dictionary);
+        String[] dictionary = in.readAllStrings();
+        BoggleSolver solver = new BoggleSolver(dictionary);
+        BoggleBoard board = new BoggleBoard(args[1]);
+        int score = 0;
+        for (String word : solver.getAllValidWords(board)) {
+            StdOut.println(word);
+            score += solver.scoreOf(word);
+        }
+        StdOut.println("Score = " + score);
+    }
 
-        for (String word : dictionary) {
-            StdOut.printf("%s is worth %d points\n", word, boggleSolver.scoreOf(word));
+    private int[] adj(int index) {
+        int len = numRow * numCol;
+
+        // Top row
+        if (index < numCol) {
+            // Top left corner
+            if (index == 0) {
+                return new int[] { 1, numCol, numCol + 1 };
+            }
+
+            // Top right corner
+            if (index == numCol - 1) {
+                // (numCol - 1) is the top right corner
+                return new int[] { numCol - 2, numCol - 1 + numCol, numCol - 2 + numCol };
+            }
+
+            // Top row non-corner
+            return new int[] {
+                    index - 1, index + 1, index - 1 + numCol, index + numCol, index + 1 + numCol
+            };
+        }
+
+        // Bottom row
+        if (index >= (len - numCol)) {
+            // Bottom left corner
+            if (index == len - numCol) {
+                return new int[] { index - numCol, index - numCol + 1, index + 1 };
+            }
+
+            // Bottom right corner
+            if (index == len - 1) {
+                return new int[] { index - 1, index - numCol, index - numCol - 1 };
+            }
+
+            // Bottom row non-corner
+            return new int[] {
+                    index - 1, index + 1, index - numCol, index - numCol - 1, index - numCol + 1
+            };
+        }
+
+        // Left col non-corner
+        if (index % numCol == 0) {
+            return new int[] {
+                    index - numCol, index + numCol, index + 1, index + 1 - numCol,
+                    index + 1 + numCol
+            };
+        }
+
+        // Right col non-corner
+        if (index % numCol == (numCol - 1)) {
+            return new int[] {
+                    index - numCol, index + numCol, index - 1, index - 1 - numCol,
+                    index - 1 + numCol
+            };
+        }
+
+        // Non-edge
+        return new int[] {
+                index - numCol, index + numCol, index - 1, index + 1,
+                index - 1 - numCol, index - 1 + numCol,
+                index + 1 - numCol, index + 1 + numCol
+        };
+    }
+
+    private void dfs(int index, String sbString, boolean[] marked) {
+        marked[index] = true;
+        sbString += (char) board1D[index];
+
+        // Stop DFS is no possible prefix in dictionary
+        if (dictTrie.get(sbString) == -1) {
+            return;
+        }
+
+        // Add to list if is a valid dictionary word and foundTrie doesn't already contain the word
+        if (dictTrie.get(sbString) > 0 && foundTrie.get(sbString) <= 0) {
+            boggleWordList.add(sbString);
+            foundTrie.put(sbString);
+        }
+
+        for (int neighbour : adj(index)) {
+            if (!marked[neighbour]) {
+                dfs(neighbour, sbString, Arrays.copyOf(marked, marked.length));
+                // dfs(neighbour, sbString, marked);
+            }
         }
     }
 
@@ -50,11 +169,11 @@ public class BoggleSolver {
         }
 
         private class Node {
-            private int value;
+            private int value = 0;
             private Node[] next = new Node[R];
         }
 
-        private void put(String key, int val) {
+        private void put(String key) {
             root = putHelper(root, key, getPoints(key), 0);
         }
 
@@ -79,8 +198,11 @@ public class BoggleSolver {
 
         public int get(String key) {
             Node x = getHelper(root, key, 0);
+            // if Node doesn't exist, return -1
+            // If a node exists but no value assigned to it
+            // i.e. not the endpoint of a put() but on the way there, return 0
             if (x == null) {
-                return 0;
+                return -1;
             }
             return x.value;
         }
