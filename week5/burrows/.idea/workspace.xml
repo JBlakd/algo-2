@@ -75,7 +75,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.saveactions" />
   </component>
-  <component name="RunManager" selected="Application.BurrowsWheeler">
+  <component name="RunManager" selected="Application.MoveToFront">
     <configuration name="BurrowsWheeler" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="BurrowsWheeler" />
       <module name="Algorithms, Part II" />
@@ -89,12 +89,21 @@
       <option name="PROGRAM_PARAMETERS" value="+" />
       <method v="2" />
     </configuration>
+    <configuration name="MoveToFront" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="MoveToFront" />
+      <module name="Algorithms, Part II" />
+      <option name="PROGRAM_PARAMETERS" value="-" />
+      <option name="REDIRECT_INPUT" value="true" />
+      <option name="INPUT_FILE" value="$PROJECT_DIR$/abra.txt" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Application.BurrowsWheeler" />
       <item itemvalue="Application.CircularSuffixArray" />
+      <item itemvalue="Application.MoveToFront" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
@@ -146,6 +155,16 @@
           <url>file://$PROJECT_DIR$/BurrowsWheeler.java</url>
           <line>72</line>
           <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/MoveToFront.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/MoveToFront.java</url>
+          <line>23</line>
+          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
