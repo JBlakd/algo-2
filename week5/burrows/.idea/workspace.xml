@@ -152,7 +152,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/BurrowsWheeler.java</url>
-          <line>72</line>
+          <line>71</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -162,7 +162,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/MoveToFront.java</url>
-          <line>51</line>
+          <line>52</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>

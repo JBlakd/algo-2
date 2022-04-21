@@ -6,7 +6,6 @@
 
 import edu.princeton.cs.algs4.BinaryStdIn;
 import edu.princeton.cs.algs4.BinaryStdOut;
-import edu.princeton.cs.algs4.StdOut;
 
 public class BurrowsWheeler {
 
@@ -82,7 +81,9 @@ public class BurrowsWheeler {
             }
         }
 
-        StdOut.print(decoded.toString());
+        // StdOut.print(decoded.toString());
+        BinaryStdOut.write(decoded.toString());
+        BinaryStdOut.close();
     }
 
     // if args[0] is "-", apply Burrows-Wheeler transform
