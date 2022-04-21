@@ -111,8 +111,9 @@ public class CircularSuffixArray {
     public static void main(String[] args) {
         CircularSuffixArray csa = new CircularSuffixArray("ABRACADABRA!");
         String[] strRep = csa.strRep();
+        StdOut.println("j\t" + "            \t" + "i");
         for (int i = 0; i < csa.length(); i++) {
-            StdOut.println(csa.index(i) + ":\t" + strRep[i]);
+            StdOut.println(csa.index(i) + ":\t" + strRep[i] + "\t" + i);
         }
     }
 
