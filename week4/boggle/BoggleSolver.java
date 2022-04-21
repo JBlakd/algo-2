@@ -36,6 +36,7 @@ public class BoggleSolver {
         numCol = board.cols();
         board1D = new int[numRow * numCol];
         boggleWordList = new ArrayList<>();
+        foundTrie = new BoggleTrie();
 
         int idx = 0;
         for (int i = 0; i < numRow; i++) {
@@ -65,11 +66,21 @@ public class BoggleSolver {
         BoggleSolver solver = new BoggleSolver(dictionary);
         BoggleBoard board = new BoggleBoard(args[1]);
         int score = 0;
+        int count = 0;
         for (String word : solver.getAllValidWords(board)) {
             StdOut.println(word);
             score += solver.scoreOf(word);
+            count++;
         }
-        StdOut.println("Score = " + score);
+        StdOut.println("Score = " + score + ". Count = " + count);
+
+        int score2 = 0;
+        int count2 = 0;
+        for (String word : solver.getAllValidWords(board)) {
+            score2 += solver.scoreOf(word);
+            count2++;
+        }
+        StdOut.println("Score = " + score2 + ". Count = " + count2);
     }
 
     private int[] adj(int index) {

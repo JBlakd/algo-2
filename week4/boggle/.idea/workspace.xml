@@ -84,7 +84,7 @@
     <configuration name="BoggleSolver" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="BoggleSolver" />
       <module name="Algorithms, Part II" />
-      <option name="PROGRAM_PARAMETERS" value="dictionary-algs4.txt board-q.txt" />
+      <option name="PROGRAM_PARAMETERS" value="dictionary-yawl.txt board-tea.txt" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -135,6 +135,11 @@
           <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/BoggleSolver.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
