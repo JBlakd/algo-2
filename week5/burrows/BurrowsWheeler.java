@@ -73,7 +73,7 @@ public class BurrowsWheeler {
         StringBuilder decoded = new StringBuilder();
         int jumpyIndex = first;
         while (true) {
-            decoded.append((char) sorted[jumpyIndex]);
+            decoded.append(sorted[jumpyIndex]);
             int temp = jumpyIndex;
             jumpyIndex = next[temp];
 
