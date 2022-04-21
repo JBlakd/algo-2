@@ -39,7 +39,25 @@ public class MoveToFront {
 
     // apply move-to-front decoding, reading from standard input and writing to standard output
     public static void decode() {
+        LinkedList<Character> seq = new LinkedList<Character>();
 
+        // Initialise the sequencer by making the i-th char in the sequencer
+        // equal to the i-th extended ASCII char
+        for (int i = 0; i <= 0xFF; i++) {
+            seq.add((char) i);
+        }
+
+        while (!BinaryStdIn.isEmpty()) {
+            // Read each character i, and treat it like an index
+            int i = BinaryStdIn.readChar();
+            // write the i-th character in the sequence
+            StdOut.printf("%c", seq.get(i));
+            // Move the i-th character to the front
+            char temp = seq.get(i);
+            seq.remove(i);
+            seq.addFirst((char) temp);
+        }
+        BinaryStdIn.close();
     }
 
     // if args[0] is "-", apply move-to-front encoding

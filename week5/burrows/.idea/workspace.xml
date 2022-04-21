@@ -92,9 +92,8 @@
     <configuration name="MoveToFront" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="MoveToFront" />
       <module name="Algorithms, Part II" />
-      <option name="PROGRAM_PARAMETERS" value="-" />
-      <option name="REDIRECT_INPUT" value="true" />
-      <option name="INPUT_FILE" value="$PROJECT_DIR$/abra.txt" />
+      <option name="PROGRAM_PARAMETERS" value="+" />
+      <option name="INPUT_FILE" value="$PROJECT_DIR$/abra.bin" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -157,16 +156,21 @@
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/MoveToFront.java</url>
-          <line>47</line>
-          <option name="timeStamp" value="24" />
+          <url>jar://$PROJECT_DIR$/.lift/algs4.jar!/edu/princeton/cs/algs4/BinaryStdOut.java</url>
+          <line>96</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/MoveToFront.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="25" />
+          <line>51</line>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="(char) i" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
