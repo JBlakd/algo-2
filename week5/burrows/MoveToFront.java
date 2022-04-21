@@ -5,7 +5,7 @@
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.BinaryStdIn;
-import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.BinaryStdOut;
 
 import java.util.LinkedList;
 
@@ -21,20 +21,26 @@ public class MoveToFront {
             seq.add((char) i);
         }
 
+        StringBuilder in = new StringBuilder();
         while (!BinaryStdIn.isEmpty()) {
-            char c = BinaryStdIn.readChar();
-            // BinaryStdOut.write((int) c);
+            in.append(BinaryStdIn.readChar());
+        }
+        BinaryStdIn.close();
+
+        for (int j = 0; j < in.length(); j++) {
+            char c = in.charAt(j);
             for (int i = 0; i < seq.size(); i++) {
                 if (seq.get(i) == c) {
-                    // BinaryStdOut.write(i, 8);
-                    StdOut.printf("%c", i);
+                    BinaryStdOut.write(i, 8);
+                    BinaryStdOut.flush();
+                    // StdOut.printf("%c", i);
                     seq.remove(i);
                     seq.addFirst(c);
                     break;
                 }
             }
         }
-        BinaryStdIn.close();
+        // BinaryStdOut.close();
     }
 
     // apply move-to-front decoding, reading from standard input and writing to standard output
@@ -47,17 +53,25 @@ public class MoveToFront {
             seq.add((char) i);
         }
 
+        StringBuilder in = new StringBuilder();
         while (!BinaryStdIn.isEmpty()) {
+            in.append(BinaryStdIn.readChar());
+        }
+        BinaryStdIn.close();
+
+        for (int j = 0; j < in.length(); j++) {
             // Read each character i, and treat it like an index
-            int i = BinaryStdIn.readChar();
+            int i = in.charAt(j);
             // write the i-th character in the sequence
-            StdOut.printf("%c", seq.get(i));
+            // StdOut.printf("%c", seq.get(i));
+            BinaryStdOut.write(seq.get(i), 8);
+            BinaryStdOut.flush();
             // Move the i-th character to the front
             char temp = seq.get(i);
             seq.remove(i);
             seq.addFirst((char) temp);
         }
-        BinaryStdIn.close();
+        // BinaryStdOut.close();
     }
 
     // if args[0] is "-", apply move-to-front encoding
