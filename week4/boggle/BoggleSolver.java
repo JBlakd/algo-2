@@ -138,7 +138,12 @@ public class BoggleSolver {
 
     private void dfs(int index, String sbString, boolean[] marked) {
         marked[index] = true;
-        sbString += (char) board1D[index];
+        if ((char) board1D[index] == 'Q') {
+            sbString += "QU";
+        }
+        else {
+            sbString += (char) board1D[index];
+        }
 
         // Stop DFS is no possible prefix in dictionary
         if (dictTrie.get(sbString) == -1) {
